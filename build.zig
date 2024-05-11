@@ -13,7 +13,7 @@ pub fn build(b: *std.Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
     const conf = b.addConfigHeader(.{ .include_path = "lox_common.h" }, .{
-        .VERSION = b.fmt("{}", .{program_version}),
+        .LOX_VERSION = b.fmt("{}", .{program_version}),
     });
 
     const lib = b.addSharedLibrary(.{
@@ -43,7 +43,7 @@ fn addEditorConfStep(b: *std.Build, lib: *std.Build.Step.Compile, conf: *std.Bui
         std.Build.Module.IncludeDir.path, .path_system => |p| try data.appendSlice(b.fmt("-I{s}\n", .{p.getPath(b)})),
         else => {},
     };
-    try data.appendSlice("-I");
+    try data.appendSlice("-xc\n-xc-header\n-I");
 
     const tee = b.addSystemCommand(&.{ "dd", "status=none", "of=compile_flags.txt" });
     tee.setStdIn(.{ .bytes = data.items });
