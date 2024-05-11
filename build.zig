@@ -12,8 +12,11 @@ pub fn build(b: *std.Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const conf = b.addConfigHeader(.{ .include_path = "lox_common.h" }, .{
+    const conf = b.addConfigHeader(.{ .include_path = "lox_config.h" }, .{
         .LOX_VERSION = b.fmt("{}", .{program_version}),
+        .LOX_VERSION_MAJOR = @as(i64, @intCast(program_version.major)),
+        .LOX_VERSION_MINOR = @as(i64, @intCast(program_version.minor)),
+        .LOX_VERSION_PATCH = @as(i64, @intCast(program_version.patch)),
     });
 
     const lib = b.addSharedLibrary(.{
@@ -42,11 +45,11 @@ pub fn build(b: *std.Build) !void {
 fn setupUninstallStep(b: *std.Build) void {
     const files_to_remove = [_][]const u8{
         b.getInstallPath(.{ .lib = {} }, b.fmt(
-            "libloxcore.so.{d}.{d}.{d}",
+            "liblox.so.{d}.{d}.{d}",
             .{ program_version.major, program_version.minor, program_version.patch },
         )),
-        b.getInstallPath(.{ .lib = {} }, b.fmt("libloxcore.so.{d}", .{program_version.major})),
-        b.getInstallPath(.{ .lib = {} }, "libloxcore.so"),
+        b.getInstallPath(.{ .lib = {} }, b.fmt("liblox.so.{d}", .{program_version.major})),
+        b.getInstallPath(.{ .lib = {} }, "liblox.so"),
         b.getInstallPath(.{ .header = {} }, "lox.h"),
     };
     const rm_step = b.getUninstallStep();

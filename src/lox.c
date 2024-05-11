@@ -1,4 +1,4 @@
-#include "lox_common.h"
+#include "lox_config.h"
 #include "state.h" // IWYU pragma: keep
 #include <lox.h>
 #include <stdio.h>

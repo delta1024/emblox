@@ -10,7 +10,7 @@ test "version" {
     defer lox_stase_close(l);
     const ver_raw: [*:0]const u8 = @ptrCast(lox.lox_version_string());
     const sent = ver_raw[0..std.mem.indexOfSentinel(u8, 0, ver_raw) :0];
-    try testing.expectEqualStrings("0.0.0-alpha\n", sent);
+    try testing.expectEqualStrings("0.0.0-alpha", sent);
 }
 // test "hi" {
 //     const l = lox_state_open();
