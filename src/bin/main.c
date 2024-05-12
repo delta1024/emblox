@@ -1,29 +1,9 @@
-// #include <lox.h>
-#include <stddef.h>
+#include <lox.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-char *open_file(const char *path) {
-    char *result = NULL;
-    FILE *file = fopen(path, "r");
-    if (file == NULL)
-        return NULL;
-
-    fseek(file, 0, SEEK_END);
-    size_t f_len = ftell(file);
-    rewind(file);
-
-    char *buffer = malloc(sizeof(char) * (f_len + 1));
-    if (buffer == NULL) {
-        fclose(file);
-        return NULL;
-    }
-    int read = fread(buffer, sizeof(char), f_len, file);
-    buffer[read] = '\0';
-    fclose(file);
-    return buffer;
-}
 void run_repl() {
+    lox_state *state = lox_state_open();
     char buff[1024];
     for (;;) {
         printf("> ");
@@ -31,20 +11,30 @@ void run_repl() {
             printf("\n");
             break;
         }
-        printf("%s\n", buff);
+        lox_dostring(state, buff);
     }
+    lox_state_close(state);
 }
 void run_file(const char *path) {
-    char *f_contents = open_file(path);
-    if (f_contents == NULL) {
-        char buf[1024];
-        snprintf(buf, 1024, "could not open file %s", path);
-        perror(buf);
-        exit(EXIT_FAILURE);
+    int exit_no = EXIT_SUCCESS;
+    lox_state *state = lox_state_open();
+
+    lox_error_t result = lox_dofile(state, path);
+    switch (result) {
+    case LOX_ERROR_INTERPRET:
+        exit_no = 70;
+        lox_state_printerr(state);
+        break;
+    case LOX_ERROR_COMPILE:
+        exit_no = 65;
+        lox_state_printerr(state);
+        break;
+    default:
+        break;
     }
-    printf("%s\n", f_contents);
-    free(f_contents);
-    exit(EXIT_SUCCESS);
+defer:
+    lox_state_close(state);
+    exit(exit_no);
 }
 
 int main(int argc, char *argv[]) {

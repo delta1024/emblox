@@ -17,6 +17,7 @@ pub fn build(b: *std.Build) !void {
         .LOX_VERSION_MAJOR = @as(i64, @intCast(program_version.major)),
         .LOX_VERSION_MINOR = @as(i64, @intCast(program_version.minor)),
         .LOX_VERSION_PATCH = @as(i64, @intCast(program_version.patch)),
+        .UINT8_MAX = @as(i64, @intCast(std.math.maxInt(u8) + 1)),
     });
 
     const lib = b.addSharedLibrary(.{
@@ -27,14 +28,19 @@ pub fn build(b: *std.Build) !void {
         .version = program_version,
     });
 
-    lib.addCSourceFiles(.{ .root = .{ .path = "src/lib" }, .files = try getSrcFiles(b, "src/lib") });
+    lib.addCSourceFiles(.{ .root = .{ .path = "src/lib/" }, .files = &.{
+        "lox.c",
+        "chunk.c",
+        "memory.c",
+        "vm.c",
+        "state.c",
+    } });
     lib.addIncludePath(.{ .path = "include" });
     lib.addIncludePath(.{ .path = "src" });
     lib.installHeadersDirectory(.{ .path = "include" }, "", .{});
     lib.addConfigHeader(conf);
-
-    b.installArtifact(lib);
-
+    const lib_install = b.addInstallArtifact(lib, .{});
+    b.getInstallStep().dependOn(&lib_install.step);
     try setupEditorConfStep(b, lib, conf);
     setupLibraryTests(lib, target, optimize);
     setupCleanSteps(b);
@@ -48,8 +54,13 @@ pub fn build(b: *std.Build) !void {
         .link_libc = true,
         .version = program_version,
     });
-    bin.addCSourceFiles(.{ .root = .{ .path = "src/bin/" }, .files = try getSrcFiles(b, "src/bin") });
-    bin.linkLibrary(lib);
+    bin.addCSourceFiles(.{ .root = .{ .path = "src/bin/" }, .files = &.{"main.c"} });
+    bin.installLibraryHeaders(lib);
+    bin.addIncludePath(b.path("include"));
+    bin.addLibraryPath(.{ .path = b.getInstallPath(.{ .lib = {} }, "") });
+    bin.addRPath(.{ .path = b.getInstallPath(.{ .lib = {} }, "") });
+    bin.linkSystemLibrary("lox");
+    bin.step.dependOn(&lib_install.step);
     b.installArtifact(bin);
 
     const run_step = b.step("run", "run the binary");
