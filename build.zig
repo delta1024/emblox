@@ -13,7 +13,7 @@ pub fn build(b: *std.Build) !void {
     const optimize = b.standardOptimizeOption(.{});
 
     const conf = b.addConfigHeader(.{ .include_path = "lox_config.h" }, .{
-        .LOX_VERSION = b.fmt("{}", .{program_version}),
+        .LOX_VERSION = b.fmt("lox {}", .{program_version}),
         .LOX_VERSION_MAJOR = @as(i64, @intCast(program_version.major)),
         .LOX_VERSION_MINOR = @as(i64, @intCast(program_version.minor)),
         .LOX_VERSION_PATCH = @as(i64, @intCast(program_version.patch)),
@@ -27,7 +27,7 @@ pub fn build(b: *std.Build) !void {
         .version = program_version,
     });
 
-    lib.addCSourceFiles(.{ .files = try getSrcFiles(b, "src/lib") });
+    lib.addCSourceFiles(.{ .root = .{ .path = "src/lib" }, .files = try getSrcFiles(b, "src/lib") });
     lib.addIncludePath(.{ .path = "include" });
     lib.addIncludePath(.{ .path = "src" });
     lib.installHeadersDirectory(.{ .path = "include" }, "", .{});
@@ -48,15 +48,16 @@ pub fn build(b: *std.Build) !void {
         .link_libc = true,
         .version = program_version,
     });
-    bin.addCSourceFile(.{
-        .file = .{ .path = "src/bin/main.c" },
-    });
+    bin.addCSourceFiles(.{ .root = .{ .path = "src/bin/" }, .files = try getSrcFiles(b, "src/bin") });
     bin.linkLibrary(lib);
     b.installArtifact(bin);
 
     const run_step = b.step("run", "run the binary");
 
     const run_cmd = b.addRunArtifact(bin);
+    if (b.args) |args|
+        run_cmd.addArgs(args);
+
     run_step.dependOn(&run_cmd.step);
 
     const dryrun_step = b.step("dryrun", "build targets but do not install them");
@@ -151,7 +152,7 @@ fn getSrcFiles(b: *std.Build, prefix: []const u8) ![]const []const u8 {
     var src_walker = try src_dir.walk(b.allocator);
     while (try src_walker.next()) |entry| {
         if (entry.kind == .file and std.mem.endsWith(u8, entry.path, ".c")) {
-            try c_files.append(b.pathJoin(&.{ prefix, entry.path }));
+            try c_files.append(entry.path);
         }
     }
     return c_files.items;
