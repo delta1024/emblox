@@ -5,13 +5,12 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-void lox_vm_init(struct memory_tracker *tracker, lox_vm *vm) {
-    vm->tracker = tracker;
+void lox_vm_init(lox_vm *vm) {
     lox_vm_resetstack(vm);
     vm->cur_chunk = NULL;
     vm->ip = NULL;
 }
-void lox_vm_free(lox_vm *vm) {}
+void lox_vm_free(lox_vm *vm, struct memory_tracker *tracker) {}
 
 void lox_vm_resetstack(lox_vm *vm) {
     vm->stack_top = vm->stack;

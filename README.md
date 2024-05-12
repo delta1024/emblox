@@ -1,4 +1,6 @@
-# Lox: an implementatian of lox sutable for embeding.
+# Lox
+An implementatian of lox sutable for embeding.
+
 This is an implementation of the lox language. Eventaly I plan to morph it into my own language.
 
 ## How to build 

@@ -13,11 +13,10 @@ typedef struct lox_vm {
     lox_value *stack_top;
     lox_chunk *cur_chunk;
     uint8_t *ip;
-    struct memory_tracker *tracker;
 } lox_vm;
 
-void lox_vm_init(struct memory_tracker *tracker, lox_vm *vm);
-void lox_vm_free(lox_vm *vm);
+void lox_vm_init(lox_vm *vm);
+void lox_vm_free(lox_vm *vm, struct memory_tracker *tracker);
 
 lox_error_t lox_vm_interpret(lox_vm *vm);
 void lox_vm_reporterror(lox_vm *vm, const char *format, ...);

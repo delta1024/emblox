@@ -34,6 +34,7 @@ pub fn build(b: *std.Build) !void {
         "memory.c",
         "vm.c",
         "state.c",
+        "debug.c",
     } });
     lib.addIncludePath(.{ .path = "include" });
     lib.addIncludePath(.{ .path = "src" });
@@ -74,6 +75,25 @@ pub fn build(b: *std.Build) !void {
     const dryrun_step = b.step("dryrun", "build targets but do not install them");
     dryrun_step.dependOn(&lib.step);
     dryrun_step.dependOn(&bin.step);
+
+    const doc_step = b.step("doc", "generate documentation");
+    const docopen_step = b.step("docopen", "open generated documentation");
+    const doc_run = b.addSystemCommand(&.{
+        "doxygen",
+        "Doxyfile",
+    });
+    doc_step.dependOn(&doc_run.step);
+
+    const doc_open_cmd = b.addSystemCommand(&.{
+        "firefox",
+        "./doc/index.html",
+    });
+    doc_open_cmd.step.dependOn(&doc_run.step);
+    docopen_step.dependOn(&doc_open_cmd.step);
+
+    const docclean_step = b.step("docclean", "clean up generated documentation directory");
+    const docclean_cmd = b.addRemoveDirTree("doc");
+    docclean_step.dependOn(&docclean_cmd.step);
 }
 
 fn setupUninstallStep(b: *std.Build) void {
