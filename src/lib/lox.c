@@ -1,5 +1,6 @@
 #include "common.h"
 #include "chunk.h"
+#include "debug.h"
 #include "state.h" // IWYU pragma: keep
 #include <lox.h>
 #include <stdio.h>
@@ -14,8 +15,9 @@ const char *lox_version_string() {
 
 lox_error_t lox_dostring(lox_state *state, const char *source) {
     lox_chunk_write_byte(&state->chunk, OP_RETURN, 0, &state->memory);
+    lox_debug_dissasemble_chunk(&state->chunk, "test");
     state->vm.cur_chunk = &state->chunk;
-    state->vm.ip = state->chunk.code;
+    state->vm.ip = state->vm.cur_chunk->code;
 
     lox_error_t result = lox_vm_interpret(&state->vm);
     if (result != LOX_ERROR_OK) {

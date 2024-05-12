@@ -4,7 +4,7 @@
 #include "memory.h"
 #include <stdint.h>
 typedef enum lox_opcode_t {
-    OP_RETURN,
+    OP_RETURN = 0,
 } lox_opcode_t;
 
 typedef struct lox_chunk {

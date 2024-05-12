@@ -50,4 +50,5 @@ lox_error_t lox_vm_interpret(lox_vm *vm) {
             return LOX_ERROR_OK;
         }
     }
+#undef read_byte
 }
