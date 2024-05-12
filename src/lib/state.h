@@ -1,8 +1,7 @@
 #ifndef _LOX_STATE_H_
 #define _LOX_STATE_H_
-// IWYU pragma: private
-// IWYU pragma: friend "src/.*"
+// IWYU pragma: private;
 struct LoxState {
-	int time;
+    int time;
 };
 #endif // !_LOX_STATE_H_

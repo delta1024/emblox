@@ -27,7 +27,7 @@ pub fn build(b: *std.Build) !void {
         .version = program_version,
     });
 
-    lib.addCSourceFiles(.{ .files = try getSrcFiles(b) });
+    lib.addCSourceFiles(.{ .files = try getSrcFiles(b, "src/lib") });
     lib.addIncludePath(.{ .path = "include" });
     lib.addIncludePath(.{ .path = "src" });
     lib.installHeadersDirectory(.{ .path = "include" }, "", .{});
@@ -40,6 +40,28 @@ pub fn build(b: *std.Build) !void {
     setupCleanSteps(b);
     setupDistStep(b);
     setupUninstallStep(b);
+
+    const bin = b.addExecutable(.{
+        .name = "lox",
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+        .version = program_version,
+    });
+    bin.addCSourceFile(.{
+        .file = .{ .path = "src/bin/main.c" },
+    });
+    bin.linkLibrary(lib);
+    b.installArtifact(bin);
+
+    const run_step = b.step("run", "run the binary");
+
+    const run_cmd = b.addRunArtifact(bin);
+    run_step.dependOn(&run_cmd.step);
+
+    const dryrun_step = b.step("dryrun", "build targets but do not install them");
+    dryrun_step.dependOn(&lib.step);
+    dryrun_step.dependOn(&bin.step);
 }
 
 fn setupUninstallStep(b: *std.Build) void {
@@ -123,13 +145,13 @@ fn setupEditorConfStep(b: *std.Build, lib: *std.Build.Step.Compile, conf: *std.B
     app.step.dependOn(&tee.step);
     editor_conf.dependOn(&app.step);
 }
-fn getSrcFiles(b: *std.Build) ![]const []const u8 {
-    const src_dir = try b.build_root.handle.openDir("src", .{ .iterate = true });
+fn getSrcFiles(b: *std.Build, prefix: []const u8) ![]const []const u8 {
+    const src_dir = try b.build_root.handle.openDir(prefix, .{ .iterate = true });
     var c_files = std.ArrayList([]const u8).init(b.allocator);
     var src_walker = try src_dir.walk(b.allocator);
     while (try src_walker.next()) |entry| {
         if (entry.kind == .file and std.mem.endsWith(u8, entry.path, ".c")) {
-            try c_files.append(b.pathJoin(&.{ "src", entry.path }));
+            try c_files.append(b.pathJoin(&.{ prefix, entry.path }));
         }
     }
     return c_files.items;
