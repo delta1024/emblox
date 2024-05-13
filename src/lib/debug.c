@@ -4,6 +4,7 @@
 #include <stdio.h>
 static const char *op_str[] = {
     [OP_RETURN] = "OP_RETURN",
+    [OP_CONSTANT] = "OP_CONSTANT",
 };
 
 void lox_debug_dissasemble_chunk(lox_chunk *chunk, const char *name) {
@@ -14,8 +15,8 @@ void lox_debug_dissasemble_chunk(lox_chunk *chunk, const char *name) {
 }
 
 static int simple_instruction(const char *name, int offset);
-// static int constant_instruction(const char *name, lox_chunk *chunk, int
-// offset);
+static int constant_instruction(const char *name, lox_chunk *chunk, int
+offset);
 int lox_debug_dissasemble_instruction(lox_chunk *chunk, int offset) {
     printf("%04d ", offset);
     if (offset > 0 && chunk->lines[offset] == chunk->lines[offset] - 1) {
@@ -26,6 +27,8 @@ int lox_debug_dissasemble_instruction(lox_chunk *chunk, int offset) {
 
     uint8_t instruction = chunk->code[offset];
     switch (instruction) {
+        case OP_CONSTANT:
+        return constant_instruction(op_str[instruction], chunk, offset);
     case OP_RETURN:
         return simple_instruction(op_str[instruction], offset);
     default:
@@ -37,10 +40,11 @@ static int simple_instruction(const char *name, int offset) {
 printf("%s\n", name);
     return offset + 1;
 }
-// static int constant_instruction(const char *name, lox_chunk *chunk, int
-// offset) {
-//     uint8_t constant = chunk->code[offset + 1];
-//     printf("%-16s %4d '", name, constant);
-//     lox_value_print(chunk->constants.values[constant]);
-//     printf("'\n");
-// }
+static int constant_instruction(const char *name, lox_chunk *chunk, int
+offset) {
+    uint8_t constant = chunk->code[offset + 1];
+    printf("%-16s %4d '", name, constant);
+    lox_value_print(chunk->constants.entries[constant]);
+    printf("'\n");
+    return offset + 2;
+}

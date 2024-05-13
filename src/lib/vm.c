@@ -2,6 +2,8 @@
 #include "chunk.h"
 #include "memory.h"
 #include "lox.h"
+#include "value.h"
+#include <lox.h>
 #include <stdarg.h>
 #include <stdio.h>
 
@@ -41,14 +43,25 @@ lox_error_t lox_vm_pushvalue(lox_vm *vm, lox_value value) {
     vm->stack_top++;
     return LOX_ERROR_OK;
 }
+lox_value lox_vm_peekvalue(lox_vm *vm, int span) {
+    return *(vm->stack_top - 1 - span);
+}
 lox_error_t lox_vm_interpret(lox_vm *vm) {
 #define read_byte() *(vm->ip++)
+#define read_constant() (vm->cur_chunk->constants.entries[read_byte()])
     for (;;) {
         int op = read_byte();
         switch ((lox_opcode_t)op) {
+            case OP_CONSTANT:  {
+                lox_value val = read_constant();
+                lox_value_print(val);
+                printf("\n");
+                break;
+            }
         case OP_RETURN:
             return LOX_ERROR_OK;
         }
     }
 #undef read_byte
+#undef read_constant
 }

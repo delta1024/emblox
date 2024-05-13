@@ -1,16 +1,19 @@
 #include "chunk.h"
 #include "memory.h"
+#include "value.h"
 #include <stddef.h>
 #include <stdint.h>
 
 void lox_chunk_init( lox_chunk *chunk) {
     chunk->code = chunk->lines = NULL;
     chunk->count = chunk->capacity = 0;
+    lox_value_array_init(&chunk->constants);
 }
 
 void lox_chunk_free(lox_chunk *chunk, struct memory_tracker *tracker) {
     lox_free(chunk->code, arraysize(uint8_t, chunk->capacity), tracker);
     lox_free(chunk->lines, arraysize(uint8_t, chunk->capacity), tracker);
+    lox_value_array_free(&chunk->constants, tracker);
     lox_chunk_init(chunk);
 }
 
@@ -27,4 +30,8 @@ void lox_chunk_write_byte(lox_chunk *chunk, uint8_t byte, uint8_t line, struct m
     }
     chunk->lines[chunk->count] = line;
     chunk->code[chunk->count++] = byte;
+}
+int lox_chunk_write_constant(lox_chunk *chunk, lox_value value, struct memory_tracker *tracker) {
+    lox_value_array_write(&chunk->constants, value, tracker);
+    return chunk->constants.count - 1;
 }
