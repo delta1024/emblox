@@ -10,11 +10,16 @@ const cur_tag = "main";
 
 const BuildOpts = struct {
     trace_execution: bool = true,
+
     fn parse(b: *std.Build) BuildOpts {
         var opts: BuildOpts = .{};
-        if (b.option(bool, "trace_stack_execution", "print stack info and current instruction")) |t|
+        if (b.option(bool, "trace_stack_execution", "print stack info and current vm instruction")) |t|
             opts.trace_execution = t;
         return opts;
+    }
+    fn setLibOpts(opts: BuildOpts, lib: *std.Build.Step.Compile) void {
+        if (opts.trace_execution)
+            lib.defineCMacro("DEBUG_TRACE_EXECUTION", null);
     }
 };
 
@@ -29,55 +34,61 @@ pub fn build(b: *std.Build) !void {
         .LOX_VERSION_PATCH = @as(i64, @intCast(program_version.patch)),
     });
 
-    const lib = b.addSharedLibrary(.{
-        .name = "lox",
-        .target = target,
-        .optimize = optimize,
-        .link_libc = true,
-        .version = program_version,
-    });
-    if (opts.trace_execution)
-        lib.defineCMacro("DEBUG_TRACE_EXECUTION", null);
-    lib.addCSourceFiles(.{ .root = .{ .path = "src/lib/" }, .files = &.{
-        "lox.c",
-        "chunk.c",
-        "memory.c",
-        "vm.c",
-        "debug.c",
-        "value.c",
-        "lox/state.c",
-        "lox/stack.c",
-        "lox/value.c",
-    } });
-    lib.addIncludePath(.{ .path = "include" });
-    lib.addIncludePath(b.path("src/lib"));
-    lib.installHeadersDirectory(.{ .path = "include" }, "", .{});
-    lib.addConfigHeader(conf);
+    const lib = lib: {
+        const l = b.addSharedLibrary(.{
+            .name = "lox",
+            .target = target,
+            .optimize = optimize,
+            .link_libc = true,
+            .version = program_version,
+        });
+
+        opts.setLibOpts(l);
+        l.addCSourceFiles(.{ .root = .{ .path = "src/lib/" }, .files = try getSrcFiles(b, "src/lib") });
+        l.addIncludePath(.{ .path = "include" });
+        l.addIncludePath(b.path("src/lib"));
+        l.installHeadersDirectory(.{ .path = "include" }, "", .{});
+        l.addConfigHeader(conf);
+        break :lib l;
+    };
 
     const lib_install = b.addInstallArtifact(lib, .{});
     b.getInstallStep().dependOn(&lib_install.step);
+
+    const bin = bin: {
+        const bn = b.addExecutable(.{
+            .name = "lox",
+            .target = target,
+            .optimize = optimize,
+            .link_libc = true,
+            .version = program_version,
+        });
+        bn.addCSourceFiles(.{ .root = .{ .path = "src/bin/" }, .files = &.{"main.c"} });
+        bn.installLibraryHeaders(lib);
+        bn.addIncludePath(b.path("include"));
+        bn.addLibraryPath(.{ .path = b.getInstallPath(.{ .lib = {} }, "") });
+        bn.addRPath(.{ .path = b.getInstallPath(.{ .lib = {} }, "") });
+        bn.linkSystemLibrary("lox");
+        bn.step.dependOn(&lib_install.step);
+        break :bin bn;
+    };
+
+    b.installArtifact(bin);
+
     try setupEditorConfStep(b, lib, conf, opts);
     setupLibraryTests(lib, target, optimize);
     setupCleanSteps(b);
     setupDistStep(b);
     setupUninstallStep(b);
+    setupDocStep(b);
+    setupRunStep(b, bin);
 
-    const bin = b.addExecutable(.{
-        .name = "lox",
-        .target = target,
-        .optimize = optimize,
-        .link_libc = true,
-        .version = program_version,
-    });
-    bin.addCSourceFiles(.{ .root = .{ .path = "src/bin/" }, .files = &.{"main.c"} });
-    bin.installLibraryHeaders(lib);
-    bin.addIncludePath(b.path("include"));
-    bin.addLibraryPath(.{ .path = b.getInstallPath(.{ .lib = {} }, "") });
-    bin.addRPath(.{ .path = b.getInstallPath(.{ .lib = {} }, "") });
-    bin.linkSystemLibrary("lox");
-    bin.step.dependOn(&lib_install.step);
-    b.installArtifact(bin);
+    const dryrun_step = b.step("dryrun", "build targets but do not install them");
+    dryrun_step.dependOn(&lib.step);
+    dryrun_step.dependOn(&bin.step);
+}
 
+fn setupRunStep(b: *std.Build, bin: *std.Build.Step.Compile) void {
     const run_step = b.step("run", "run the binary");
 
     const run_cmd = b.addRunArtifact(bin);
@@ -85,11 +96,9 @@ pub fn build(b: *std.Build) !void {
         run_cmd.addArgs(args);
 
     run_step.dependOn(&run_cmd.step);
+}
 
-    const dryrun_step = b.step("dryrun", "build targets but do not install them");
-    dryrun_step.dependOn(&lib.step);
-    dryrun_step.dependOn(&bin.step);
-
+fn setupDocStep(b: *std.Build) void {
     const doc_step = b.step("doc", "generate documentation");
     const docopen_step = b.step("docopen", "open generated documentation");
     const doc_run = b.addSystemCommand(&.{
@@ -109,7 +118,6 @@ pub fn build(b: *std.Build) !void {
     const docclean_cmd = b.addRemoveDirTree("doc");
     docclean_step.dependOn(&docclean_cmd.step);
 }
-
 fn setupUninstallStep(b: *std.Build) void {
     const files_to_remove = [_][]const u8{
         b.getInstallPath(.{ .lib = {} }, b.fmt(
@@ -201,8 +209,8 @@ fn getSrcFiles(b: *std.Build, prefix: []const u8) ![]const []const u8 {
     var c_files = std.ArrayList([]const u8).init(b.allocator);
     var src_walker = try src_dir.walk(b.allocator);
     while (try src_walker.next()) |entry| {
-        if (entry.kind == .file and std.mem.endsWith(u8, entry.path, ".c")) {
-            try c_files.append(entry.path);
+        if (entry.kind == .file and std.mem.eql(u8, std.fs.path.extension(entry.path), ".c")) {
+            try c_files.append(b.dupe(entry.path));
         }
     }
     return c_files.items;
