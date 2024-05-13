@@ -27,7 +27,6 @@ pub fn build(b: *std.Build) !void {
         .LOX_VERSION_MAJOR = @as(i64, @intCast(program_version.major)),
         .LOX_VERSION_MINOR = @as(i64, @intCast(program_version.minor)),
         .LOX_VERSION_PATCH = @as(i64, @intCast(program_version.patch)),
-        .UINT8_MAX = @as(i64, @intCast(std.math.maxInt(u8) + 1)),
     });
 
     const lib = b.addSharedLibrary(.{

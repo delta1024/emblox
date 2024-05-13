@@ -9,6 +9,9 @@
 #include "debug.h"
 #endif /* ifdef DEBUG_TRACE_EXECUTION */
 
+static inline bool check_err(lox_error_t err) {
+    return err == LOX_ERROR_OK;
+}
 void lox_vm_init(lox_vm *vm) {
     lox_vm_resetstack(vm);
     vm->cur_chunk = NULL;
@@ -54,6 +57,13 @@ lox_error_t lox_vm_interpret(lox_vm *vm) {
     for (;;) {
 
         #ifdef DEBUG_TRACE_EXECUTION
+        printf("         ");
+        for (lox_value *slot = vm->stack; slot < vm->stack_top; slot++) {
+            printf("[ ");
+            lox_value_print(*slot);
+            printf(" ]");
+        }
+        printf("\n");
         lox_debug_dissasemble_instruction(vm->cur_chunk, vm->ip - vm->cur_chunk->code);
         #endif /* ifdef DEBUG_TRACE_EXECUTION */
 
@@ -61,12 +71,18 @@ lox_error_t lox_vm_interpret(lox_vm *vm) {
         switch ((lox_opcode_t)op) {
             case OP_CONSTANT:  {
                 lox_value val = read_constant();
-                lox_value_print(val);
-                printf("\n");
+                lox_error_t res = lox_vm_pushvalue(vm, val);
+                if (!check_err(res)) {
+                    return res;
+                }
                 break;
             }
-        case OP_RETURN:
-            return LOX_ERROR_OK;
+            case OP_RETURN: {
+                lox_value val = lox_vm_popvalue(vm);
+                lox_value_print(val);
+                printf("\n");
+                return LOX_ERROR_OK;
+            }
         }
     }
 #undef read_byte
