@@ -8,10 +8,20 @@ const program_version = std.SemanticVersion{
 };
 const cur_tag = "main";
 
+const BuildOpts = struct {
+    trace_execution: bool = true,
+    fn parse(b: *std.Build) BuildOpts {
+        var opts: BuildOpts = .{};
+        if (b.option(bool, "trace_stack_execution", "print stack info and current instruction")) |t|
+            opts.trace_execution = t;
+        return opts;
+    }
+};
+
 pub fn build(b: *std.Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
-
+    const opts = BuildOpts.parse(b);
     const conf = b.addConfigHeader(.{ .include_path = "lox_config.h" }, .{
         .LOX_VERSION = b.fmt("lox {}", .{program_version}),
         .LOX_VERSION_MAJOR = @as(i64, @intCast(program_version.major)),
@@ -27,7 +37,8 @@ pub fn build(b: *std.Build) !void {
         .link_libc = true,
         .version = program_version,
     });
-
+    if (opts.trace_execution)
+        lib.defineCMacro("DEBUG_TRACE_EXECUTION", null);
     lib.addCSourceFiles(.{ .root = .{ .path = "src/lib/" }, .files = &.{
         "lox.c",
         "chunk.c",
@@ -46,7 +57,7 @@ pub fn build(b: *std.Build) !void {
 
     const lib_install = b.addInstallArtifact(lib, .{});
     b.getInstallStep().dependOn(&lib_install.step);
-    try setupEditorConfStep(b, lib, conf);
+    try setupEditorConfStep(b, lib, conf, opts);
     setupLibraryTests(lib, target, optimize);
     setupCleanSteps(b);
     setupDistStep(b);
@@ -157,12 +168,15 @@ fn setupLibraryTests(lib: *std.Build.Step.Compile, target: std.Build.ResolvedTar
     const test_step = b.step("test", "Run unit tests");
     test_step.dependOn(&run_lib_unit_tests.step);
 }
-fn setupEditorConfStep(b: *std.Build, lib: *std.Build.Step.Compile, conf: *std.Build.Step.ConfigHeader) !void {
+fn setupEditorConfStep(b: *std.Build, lib: *std.Build.Step.Compile, conf: *std.Build.Step.ConfigHeader, opts: BuildOpts) !void {
     var data = std.ArrayList(u8).init(b.allocator);
     for (lib.root_module.include_dirs.items) |inc| switch (inc) {
         std.Build.Module.IncludeDir.path, .path_system => |p| try data.appendSlice(b.fmt("-I{s}\n", .{p.getPath(b)})),
         else => {},
     };
+    if (opts.trace_execution)
+        try data.appendSlice("-DDEBUG_TRACE_EXECUTION\n");
+
     try data.appendSlice("-xc\n-xc-header\n-I");
 
     const tee = b.addSystemCommand(&.{ "dd", "status=none", "of=src/lib/compile_flags.txt" });

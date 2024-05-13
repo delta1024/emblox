@@ -1,11 +1,13 @@
 #include "vm.h"
 #include "chunk.h"
 #include "memory.h"
-#include "lox.h"
 #include "value.h"
 #include <lox.h>
 #include <stdarg.h>
 #include <stdio.h>
+#ifdef DEBUG_TRACE_EXECUTION
+#include "debug.h"
+#endif /* ifdef DEBUG_TRACE_EXECUTION */
 
 void lox_vm_init(lox_vm *vm) {
     lox_vm_resetstack(vm);
@@ -50,6 +52,11 @@ lox_error_t lox_vm_interpret(lox_vm *vm) {
 #define read_byte() *(vm->ip++)
 #define read_constant() (vm->cur_chunk->constants.entries[read_byte()])
     for (;;) {
+
+        #ifdef DEBUG_TRACE_EXECUTION
+        lox_debug_dissasemble_instruction(vm->cur_chunk, vm->ip - vm->cur_chunk->code);
+        #endif /* ifdef DEBUG_TRACE_EXECUTION */
+
         int op = read_byte();
         switch ((lox_opcode_t)op) {
             case OP_CONSTANT:  {
