@@ -4,7 +4,7 @@
 #include "common.h"
 #include "memory.h"
 #include "value.h"
-#include <lox.h>
+#include "lox/error.h"
 
 #define STACK_MAX UINT8_MAX
 

@@ -1,6 +1,7 @@
 #include "value.h"
 #include "memory.h"
 #include <stdio.h>
+
 void lox_value_print(lox_value val) {
     printf("%g", val);
 }
