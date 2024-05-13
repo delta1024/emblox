@@ -3,7 +3,6 @@
 #include "chunk.h"
 #include "memory.h"
 #include "vm.h"
-// IWYU pragma: private;
 struct lox_state {
     lox_vm vm;
     lox_chunk chunk;

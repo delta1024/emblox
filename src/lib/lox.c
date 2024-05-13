@@ -25,6 +25,7 @@ lox_error_t lox_dostring(lox_state *state, const char *source) {
     }
     return LOX_ERROR_OK;
 }
+
 lox_error_t lox_dofile(lox_state *state, const char *path) {
     FILE *file = fopen(path, "r");
     if (file == NULL) {

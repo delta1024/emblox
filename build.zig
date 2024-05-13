@@ -33,8 +33,11 @@ pub fn build(b: *std.Build) !void {
         "chunk.c",
         "memory.c",
         "vm.c",
-        "state.c",
         "debug.c",
+        "value.c",
+        "lox/state.c",
+        "lox/stack.c",
+        "lox/value.c",
     } });
     lib.addIncludePath(.{ .path = "include" });
     lib.addIncludePath(b.path("src/lib"));

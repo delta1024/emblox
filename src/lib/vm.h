@@ -24,5 +24,6 @@ void lox_vm_reporterror(lox_vm *vm, const char *format, ...);
 void lox_vm_resetstack(lox_vm *vm);
 lox_value lox_vm_popvalue(lox_vm *vm);
 lox_error_t lox_vm_pushvalue(lox_vm *vm, lox_value value);
+lox_value lox_vm_peekvalue(lox_vm *vm, int span);
 
 #endif // !_LOX_VM_H

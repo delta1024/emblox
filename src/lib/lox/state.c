@@ -7,7 +7,8 @@
 lox_state *lox_state_open() {
     struct memory_tracker tracker;
     lox_state *state = lox_malloc(sizeof(lox_state), &tracker);
-    if (state == NULL) return NULL;
+    if (state == NULL)
+        return NULL;
     state->memory = tracker;
     lox_vm_init(&state->vm);
     lox_chunk_init(&state->chunk);
