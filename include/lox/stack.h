@@ -3,16 +3,15 @@
 #include "state.h"
 #include "value.h"
 // IWYU pragma: private, include <lox.h>
-/*! \file lox/stack.h
-    \defgroup lox_stack lox_stack
-    @{
-    @brief functions for interacting with the stack
-    \ingroup lox
-*/
 
-/*!
- Pushes an integer onto the stack.
+/*! \file lox/stack.h */
+/** \defgroup lox_stack lox_stack
+    \ingroup lox
+    Stack manipulation functions
 */
+/// @{
+
+/** Pushes an integer onto the stack. */
 void lox_pushnumber(lox_state *state, lox_number_t value);
 
 /*!
@@ -25,10 +24,7 @@ lox_number_t lox_popnumber(lox_state *state);
  \returns an integer or 0 if value in not a number
 */
 lox_number_t lox_peeknumber(lox_state *state, int span);
-/*!
-Retrievs the type of the value at \a span - 1 from the top of the stack.
-*/
+/*! Retrievs the type of the value at \a span - 1 from the top of the stack. */
 lox_value_t lox_peektype(lox_state *state, int span);
-
-/*! @} */
+/// @}
 #endif // !LOX_STACK_H

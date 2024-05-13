@@ -1,8 +1,9 @@
 #ifndef _LOX_VALUE_H
 #define _LOX_VALUE_H
 
+#include "lox/value.h"
 #include "memory.h"
-typedef double lox_value;
+typedef lox_number_t lox_value;
 
 typedef struct lox_value_array {
     int count;
