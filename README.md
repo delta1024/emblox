@@ -1,6 +1,8 @@
 # Lox
 An implementatian of lox sutable for embeding.
 
+you can read the api documentation [here](https://delta1024.github.io/emblox)
+
 This is an implementation of the lox language. Eventaly I plan to morph it into my own language.
 
 ## How to build 
