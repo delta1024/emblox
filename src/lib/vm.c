@@ -1,6 +1,6 @@
 #include "vm.h"
-#include "lib/chunk.h"
-#include "lib/memory.h"
+#include "chunk.h"
+#include "memory.h"
 #include "lox.h"
 #include <stdarg.h>
 #include <stdio.h>
