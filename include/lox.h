@@ -16,7 +16,7 @@ lox_error_t lox_dofile(lox_state *state, const char *path);
 
 /*!
  Parses @a source and executes the resulting function.
- @returns  LOX_ERROR_OK or  \ref lox_error_t
+ @returns \ref LOX_ERROR_OK or  \ref lox_error_t
 */
 lox_error_t lox_dostring(lox_state *state, const char *source);
 /*!
