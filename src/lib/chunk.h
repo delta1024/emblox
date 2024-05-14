@@ -19,7 +19,9 @@ typedef struct lox_chunk {
 
 void lox_chunk_init(lox_chunk *chunk);
 void lox_chunk_free(lox_chunk *chunk, struct memory_tracker *tracker);
-void lox_chunk_write_byte(lox_chunk *chunk, uint8_t byte, uint8_t line,struct memory_tracker *tracker);
-int lox_chunk_write_constant(lox_chunk *chunk, lox_value value, struct memory_tracker *tracker);
+void lox_chunk_write_byte(lox_chunk *chunk, uint8_t byte, uint8_t line,
+                          struct memory_tracker *tracker);
+int lox_chunk_write_constant(lox_chunk *chunk, lox_value value,
+                             struct memory_tracker *tracker);
 
 #endif // !_LOX_CHUNK_H

@@ -12,8 +12,10 @@ typedef struct lox_value_array {
 } lox_value_array;
 
 void lox_value_array_init(lox_value_array *array);
-void lox_value_array_write(lox_value_array *array, lox_value value, struct memory_tracker *tracker);
-void lox_value_array_free(lox_value_array *array, struct memory_tracker *tracker);
+void lox_value_array_write(lox_value_array *array, lox_value value,
+                           struct memory_tracker *tracker);
+void lox_value_array_free(lox_value_array *array,
+                          struct memory_tracker *tracker);
 
 void lox_value_print(lox_value val);
 

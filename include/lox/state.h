@@ -2,7 +2,7 @@
 #define LOX_STATE_H
 // IWYU pragma: private, include <lox.h>
 
-/** 
+/**
  * @file lox/state.h
  * @brief Lox state managment functions
  * @defgroup lox_state Lox state managment functions

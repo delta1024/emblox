@@ -2,9 +2,9 @@
 #define _LOX_VM_H
 #include "chunk.h"
 #include "common.h"
+#include "lox/error.h"
 #include "memory.h"
 #include "value.h"
-#include "lox/error.h"
 
 #define STACK_MAX UINT8_MAX
 

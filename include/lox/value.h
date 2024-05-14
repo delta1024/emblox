@@ -4,8 +4,8 @@
 
 #include "state.h"
 
-/** 
- * @file lox/value.h 
+/**
+ * @file lox/value.h
  * @brief Lox value manipulation functions
  * @defgroup lox_value Lox value manipulation functions
  * @ingroup Lox

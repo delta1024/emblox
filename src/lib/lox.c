@@ -15,13 +15,13 @@ const char *lox_version_string() {
 lox_error_t lox_dostring(lox_state *state, const char *source) {
     int pos = lox_chunk_write_constant(&state->chunk, 55, &state->memory);
 
-    lox_chunk_write_byte(&state->chunk, OP_CONSTANT, 0,&state->memory);
-    lox_chunk_write_byte(&state->chunk, pos, 0,&state->memory);
+    lox_chunk_write_byte(&state->chunk, OP_CONSTANT, 0, &state->memory);
+    lox_chunk_write_byte(&state->chunk, pos, 0, &state->memory);
     lox_chunk_write_byte(&state->chunk, OP_RETURN, 1, &state->memory);
 
     lox_debug_dissasemble_chunk(&state->chunk, "test");
     state->vm.cur_chunk = &state->chunk;
-    state->vm.ip = state->vm.cur_chunk->code;
+    state->vm.ip        = state->vm.cur_chunk->code;
 
     lox_error_t result = lox_vm_interpret(&state->vm);
     if (result != LOX_ERROR_OK) {
