@@ -3,3 +3,4 @@ zig-cache
 compile_flags.txt
 doc/
 mkmf.log
+mkmf.log rn

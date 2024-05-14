@@ -6,30 +6,32 @@
 #include "lox/state.h"
 #include "lox/value.h"
 // IWYU pragma: end_export
-/*! @file lox.h 
- \defgroup lox lox
- @{
-*/
+
+/** 
+ * @file lox.h 
+ * @brief A toy programing language
+ * @defgroup Lox API for the lox library
+ * @{
+ */
 
 
-/*!
-  Parses the contents of the file at \a path and executs the resulting function 
-  @returns \ref lox_error_t or \ref LOX_ERROR_OK
+/**
+ * Parses the contents of the file at path and executes the resulting function 
+ * @param state An active lox state
+ * @param path The reletive path to the file to open
+ * @returns \ref lox_error_t or \ref LOX_ERROR_OK
  */
 lox_error_t lox_dofile(lox_state *state, const char *path);
 
-/*!
- Parses @a source and executes the resulting function.
- @returns \ref lox_error_t or \ref LOX_ERROR_OK
+/**
+ * Parses @a source and executes the resulting function.
+ * @returns \ref lox_error_t or \ref LOX_ERROR_OK
 */
 lox_error_t lox_dostring(lox_state *state, const char *source);
-/*!
-prints lox version and exits
-*/
+/** Prints lox version and exits */
 void lox_print_version();
-/*!
-@returns version string
-*/
+/** Get a the program version as a string */
 const char *lox_version_string();
-/**@}*/
+
+/** @} */
 #endif // !LOX_H
