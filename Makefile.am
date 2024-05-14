@@ -1,3 +1,4 @@
+AM_CPPFLAGS       = -Iinclude
 ACLOCAL_AMFLAGS   = -Im4
 SUBDIRS           = src/lib
 include_HEADERS	  = include/lox.h \
