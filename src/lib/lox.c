@@ -5,11 +5,11 @@
 #include <stdio.h>
 
 void lox_print_version() {
-    printf("%s", LOX_VERSION);
+    printf("%s", VERSION);
 }
 
 const char *lox_version_string() {
-    return LOX_VERSION;
+    return VERSION;
 }
 
 lox_error_t lox_dostring(lox_state *state, const char *source) {

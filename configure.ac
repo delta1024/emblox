@@ -8,6 +8,7 @@ AC_DEFINE([DEBUG_TRACE_EXECUTION], [], [Trace execution])
 AC_CONFIG_FILES([
 	Makefile
 	src/lib/Makefile
+	src/bin/Makefile
 ])
 AC_ENABLE_SHARED
 AC_DISABLE_STATIC
