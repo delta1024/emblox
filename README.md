@@ -8,12 +8,15 @@ This is an implementation of the lox language. Eventaly I plan to morph it into 
 ## How to build 
 to build and install the program on arch linux run:
 ```sh
-zig build dryrun
-sudo zig build --prefix=/usr
+./setup 
+cd build
+make
+sudo make install
 ```
 to uninstall the program run:
 ```sh
-sudo zig build uninstall --prefix=/usr
+cd build
+sudo make uninstall
 ```
 
 ## Usage
