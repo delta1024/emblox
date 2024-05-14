@@ -1,0 +1,6 @@
+#!/usr/bin/sh
+autoreconf --install
+mkdir build
+pushd build
+../configure
+popd
