@@ -1,7 +1,7 @@
 {
  "name":   "lox",
  "github": "delta1024/emblox",
- "input":  "include/",
+ "input":  "include/lox",
  "prefix": "lox_",
  "branch": "gh-pages"
 }
