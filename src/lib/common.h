@@ -2,7 +2,7 @@
 #define _LOX_COMMON_H_
 // IWYU pragma: begin_exports
 
-#include "lox_config.h"
+#include "config.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
