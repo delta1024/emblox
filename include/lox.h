@@ -10,6 +10,8 @@
  \defgroup lox lox
  @{
 */
+
+
 /*!
   Parses the contents of the file at \a path and executs the resulting function 
   @returns \ref lox_error_t or \ref LOX_ERROR_OK
