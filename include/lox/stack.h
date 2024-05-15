@@ -5,8 +5,8 @@
 #include "value.h"
 /**
  * @file lox/stack.h
+ * @defgroup lox_stack lox_stack
  * @brief Lox stack manipulation functions
- * @defgroup lox_stack Lox stack manipulation functions
  * @ingroup Lox
  * @{
  */

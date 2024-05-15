@@ -4,8 +4,8 @@
 
 /**
  * @file lox/state.h
+ * @defgroup lox_state lox_state
  * @brief Lox state managment functions
- * @defgroup lox_state Lox state managment functions
  * @ingroup Lox
  * @{
  */

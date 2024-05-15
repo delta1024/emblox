@@ -6,8 +6,8 @@
 
 /**
  * @file lox/value.h
+ * @defgroup lox_value lox_value
  * @brief Lox value manipulation functions
- * @defgroup lox_value Lox value manipulation functions
  * @ingroup Lox
  * @{
  */
