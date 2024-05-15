@@ -10,4 +10,4 @@ include_HEADERS	  = include/lox.h \
 
 .PHONY: doc
 doc:
-	doxygen ../Doxyfile
+	doxygen Doxyfile
