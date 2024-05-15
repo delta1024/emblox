@@ -2,9 +2,5 @@
 
 main () {
 	autoreconf --install
-	mkdir build
-	pushd build
-	../configure
-	popd
 }
 main 

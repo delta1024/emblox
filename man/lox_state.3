@@ -1,0 +1,34 @@
+.TH lox_state 3 2024-05-15 emblox
+.SH NAME
+lox_state_open, lox_state_close, lox_state_printerr \- Lox state managment\
+ functions
+.SH LIBRARY
+Lox Embeded Library
+.RI ( lox ", " \-llox )
+.SH SYNOPSIS
+.nf
+.B #include <lox.h>
+.P
+.BI "lox_state *lox_state_open();"
+.BI "void lox_state_close(lox_state *\fIstate\fP);"
+.BI "void lox_state_printerr(lox_state *\fIstate\fP);"
+.fi
+.SH DESCRIPTION
+The functions in the
+.BR lox_state
+family of functions allow for direct interaction with the lox state.
+.P 
+.BR lox_state_printerr 
+\- prints the last error encountered by lox to 
+.BR stdout (3)
+.P
+.SH RETURN VALUE
+.P
+.in +4n
+.EX
+typedef struct lox_state lox_state;
+.EE
+.in
+.P
+An opaque structure representing a handle to an active 
+.BR lox_state.

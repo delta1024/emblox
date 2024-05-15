@@ -7,7 +7,10 @@ include_HEADERS	  = include/lox.h \
 		    include/lox/stack.h \
 		    include/lox/state.h \
 		    include/lox/value.h
-
+man3_MANS         = man/lox_state.3 \
+		    man/lox_error.3
 .PHONY: doc
 doc:
 	doxygen Doxyfile
+
+

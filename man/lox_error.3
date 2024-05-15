@@ -1,0 +1,28 @@
+.TH lox_state 3 2024-05-15 emblox
+.SH NAME
+lox_error
+.SH SYNOPSIS
+lox error handling values
+.P 
+.B #include <lox.h>
+.SH DESCRIPTION
+.TP 
+LOX_ERROR_OK 
+.TP 
+LOX_ERROR_COMPILE
+.P
+.in +4n
+Error occured during compilation of bytecode
+.in
+.TP 
+LOX_ERROR_INTERPRET
+.P
+.in +4
+Error occured during vm interpretation
+.in
+.TP 
+LOX_ERROR_STACK_OVERFLOW
+.P
+.in +4
+Call Frame stack contains too many values
+
