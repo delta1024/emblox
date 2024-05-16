@@ -1,28 +1,42 @@
 #!/usr/bin/sh
 
+print_help () {
+	echo "setup [Option|[BUILD_DIR] [COMPILE_FLAGS]]"
+	echo ""
+	echo "Options:"
+	echo "--clean     remove all file not tracked by git"
+	echo "--config    run ./configure after setting up build system"
+	echo " --help     Show this help"
+}
+setup_build () {
+	autoreconf --install
+}
+build_user_dir () {
+	cur_dir=$(pwd)
+	build_dir=$1
+	shift
+	autoreconf --install && \
+		mkdir $build_dir && \
+		pushd $build_dir && \
+		$(realpath -s --relative-to=$(pwd) $cur_dir)/configure $@
+}
 main () {
 	if [[ $# -eq 0 ]]; then
-		autoreconf --install
+		setup_build
 		exit 0
 	fi
 	case $1 in 
 		"--help" | "-h")
-			echo "setup [BUILD_DIR] [OPT_FLAGS]"
-			echo ""
-			echo "Options:"
-			echo "--clean     remove all file not tracked by git"
-			echo " --help     Show this help"
+			print_help
+			;;
+		"--config" | ".")
+			./configure
 			;;
 		"--clean")
 			git clean -fxd
 			;;
 		*)
-			cur_dir=$(pwd)
-			autoreconf --install && \
-			mkdir $1 && \
-			pushd $1 && \
-			$(realpath -s --relative-to=$(pwd) $cur_dir)/configure $2
-						;;
+			build_user_dir $@
 	esac
 }
 main $@
