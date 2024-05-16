@@ -26,8 +26,10 @@ lox_error_t lox_dostring(lox_state *state, const char *source) {
     lox_error_t result = lox_vm_interpret(&state->vm);
     if (result != LOX_ERROR_OK) {
         state->last_error = result;
+        lox_chunk_free(&state->chunk, &state->memory);
         return LOX_ERROR_INTERPRET;
     }
+    lox_chunk_free(&state->chunk, &state->memory);
     return LOX_ERROR_OK;
 }
 
