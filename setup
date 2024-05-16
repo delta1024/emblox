@@ -1,6 +1,28 @@
 #!/usr/bin/sh
 
 main () {
-	autoreconf --install
+	if [[ $# -eq 0 ]]; then
+		autoreconf --install
+		exit 0
+	fi
+	case $1 in 
+		"--help" | "-h")
+			echo "setup [BUILD_DIR] [OPT_FLAGS]"
+			echo ""
+			echo "Options:"
+			echo "--clean     remove all file not tracked by git"
+			echo " --help     Show this help"
+			;;
+		"--clean")
+			git clean -fxd
+			;;
+		*)
+			cur_dir=$(pwd)
+			autoreconf --install && \
+			mkdir $1 && \
+			pushd $1 && \
+			$(realpath -s --relative-to=$(pwd) $cur_dir)/configure $2
+						;;
+	esac
 }
-main 
+main $@
