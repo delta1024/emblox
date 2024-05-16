@@ -9,6 +9,7 @@ AC_CONFIG_FILES([
 	Doxyfile
 	doxygen-awesome.css
 	Makefile
+	man/Makefile
 	src/lib/Makefile
 	src/bin/Makefile
 ])
