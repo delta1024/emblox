@@ -30,7 +30,9 @@ main () {
 			print_help
 			;;
 		"--config" | ".")
-			./configure
+			setup_build
+			shift
+			./configure $@
 			;;
 		"--clean")
 			git clean -fxd
