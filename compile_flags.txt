@@ -2,3 +2,4 @@
 -xc-header
 -Iinclude
 -Ibuild
+-Isrc/lib/

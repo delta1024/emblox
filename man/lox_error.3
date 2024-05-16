@@ -7,21 +7,25 @@ lox error handling values
 .B #include <lox.h>
 .SH DESCRIPTION
 .TP 
-LOX_ERROR_OK 
+.B LOX_ERROR_OK 
+.P
+.in +4n
+No error occured
+.in 
 .TP 
-LOX_ERROR_COMPILE
+.B LOX_ERROR_COMPILE
 .P
 .in +4n
 Error occured during compilation of bytecode
 .in
 .TP 
-LOX_ERROR_INTERPRET
+.B LOX_ERROR_INTERPRET
 .P
 .in +4
 Error occured during vm interpretation
 .in
 .TP 
-LOX_ERROR_STACK_OVERFLOW
+.B LOX_ERROR_STACK_OVERFLOW
 .P
 .in +4
 Call Frame stack contains too many values

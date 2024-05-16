@@ -3,6 +3,7 @@
 // IWYU pragma: private, include <lox.h>
 #include "state.h"
 #include "value.h"
+#include "error.h"
 /**
  * @file lox/stack.h
  * @defgroup lox_stack lox_stack
@@ -12,7 +13,7 @@
  */
 
 /** Pushes an integer onto the stack. */
-void lox_pushnumber(lox_state *state, lox_number_t value);
+lox_error_t lox_pushnumber(lox_state *state, lox_number_t value);
 
 /**
  * Pops an integer off the stack.

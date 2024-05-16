@@ -1,7 +1,7 @@
 #include "state.h" // IWYU pragma: keep
 #include "vm.h"
 #include <lox.h>
-void lox_pushnumber(lox_state *state, lox_number_t value) {
+lox_error_t lox_pushnumber(lox_state *state, lox_number_t value) {
     lox_error_t result = lox_vm_pushvalue(&state->vm, value);
     if (result != LOX_ERROR_OK)
         state->last_error = result;

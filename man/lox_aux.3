@@ -1,0 +1,43 @@
+.TH lox_aux 3 2024-05-16 emblox
+.SH NAME
+lox_dostring, lox_dofile, lox_print_version, lox_version_string \- Lox auxilary functions.
+.SH SYNOPSIS
+.nf
+.B #include <lox.h>
+.P
+.BI "lox_error_t lox_dostring(lox_state *\fIstate\fP,"
+.BI "                         const char *\fIsource\fP);"
+.BI "lox_error_t lox_dofile(lox_state *\fIstate\fP,"
+.BI "                         const char *\fIpath\fP);"
+.P
+.BI "void lox_print_version();"
+.BI "const char *lox_version_string();"
+.if
+.P
+.SH DESCRIPTION
+Helper funnctions for lox
+.P
+.TP
+.BR lox_dostring
+.P
+.in +4n
+Executes \fIsource\fP.
+.in
+.TP
+.B lox_dofile
+.P
+.in +4n
+Opens file at \fIpath\fP and executes its contents.
+.in
+.SH RETURN VALUE
+.TP
+.B lox_dostring
+.TP
+.B lox_dofile
+.P
+.in +4n
+LOX_ERROR_OK or a 
+.BR lox_error (3)
+.in
+.SH SEE ALSO
+.BR lox_error (3) 

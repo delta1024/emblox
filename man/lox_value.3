@@ -1,0 +1,37 @@
+.TH lox_value 3 2024-05-16 emblox
+.SH NAME
+lox_value_t, lox_number_t, lox_printvalue \- Lox value definitions and utility functions.
+.SH SYNOPSIS
+.nf
+.B #include <lox.h>
+.P
+.in +4n
+.EX
+typedef enum lox_value_t {
+	/* See description for enum variants */
+} lox_value_t;
+
+typedef double lox_number_t;
+.EE
+.in
+.P
+.BI "void lox_printvalue(lox_state *\fIstate\fP, int \fIspan\fP);"
+.if
+.P
+.SH DESCRIPTION
+Lox value types
+.P
+.TP
+.B lox_printvalue
+.in +4n
+Prints the value at \fIspan\fP to stdout.
+See 
+.BR lox_stack (3)
+for a description of how \fIspan\fP works.
+.in
+.P
+.TP 
+.B LOX_VALUE_NUMBER
+.SH SEE ALSO
+.BR stdout (3)
+.BR lox_stack (3)

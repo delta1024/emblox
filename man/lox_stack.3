@@ -1,0 +1,62 @@
+.TH lox_stack 3 2024-05-16 emblox
+.SH NAME
+lox_pushnumber, lox_popnumber, lox_peeknumber, lox_peektype \
+\- Lox stack manipulation functions
+.SH SYNOPSIS
+.nf
+.B #include <lox.h>
+.P
+.BI "lox_error_t lox_pushnumber(lox_state *\fIstate\fP,"
+.BI "                           lox_number_t \fIvalue\fP);"
+.BI "lox_number_t lox_popnumber(lox_state *\fIstate\fP);"
+.BI "lox_number_t lox_peeknumber(lox_state *\fIstate\fP,"
+.BI "                           int \fIspan\fP);"
+.P
+.BI "lox_value_t lox_peektype(lox_state *\fIstatus\fP,"
+.BI "                         int \fIspan\fP);"
+.if
+.P
+.SH DESCRIPTION
+The functions in the 
+.BR lox_stack
+family of functions allow for manipulating the stack.
+.P
+Any functions that take a paramater called \fIspan\fP will find the value\
+ at position n - 1 - \fIspan\fP, where n is the position at the top of the stack
+.P
+.TP
+.B lox_peeknumber
+.P
+.in +4n
+The value of \fIspan\fP is suptracted from the top position on the stack.\
+Returns that value.
+.in
+.TP 
+.B lox_peektype
+.P
+.in +4n
+See description for 
+.BR lox_peeknumber
+.in
+.P
+.SH RETURN VALUE
+.TP
+.B lox_pushnumber
+.P
+.in +4n
+LOX_ERROR_OK or LOX_ERROR_STACK_OVERFLOW.
+.in
+.TP
+.B lox_peeknumber
+.TP
+.B lox_popnumber
+.P
+.in +4n
+Returns a number value or 0 if argument is out of range or if stack is \
+empty.
+.in
+.P
+.SH SEE ALSO
+.BR lox_error (3) 
+.BR lox_value (3)
+
