@@ -1,6 +1,6 @@
-include_HEADERS	  = %reldir%/include/lox.h \
-		    %reldir%/include/lox/aux.h \
-		    %reldir%/include/lox/error.h \
-		    %reldir%/include/lox/stack.h \
-		    %reldir%/include/lox/state.h \
-		    %reldir%/include/lox/value.h
+include_HEADERS	  = %reldir%/lox.h \
+		    %reldir%/lox/aux.h \
+		    %reldir%/lox/error.h \
+		    %reldir%/lox/stack.h \
+		    %reldir%/lox/state.h \
+		    %reldir%/lox/value.h

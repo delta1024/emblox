@@ -1,6 +1,6 @@
 lib_LTLIBRARIES    = %reldir%/liblox.la
 %canon_reldir%_liblox_la_CPPFLAGS = -I$(top_srcdir)/include \
-			            -I%reldir%
+			            -I$(top_srcdir)/src/lib
 %canon_reldir%_liblox_la_SOURCES  = \
 	%reldir%/chunk.h     %reldir%/chunk.c     \
 	%reldir%/debug.h     %reldir%/debug.c     \

@@ -4,7 +4,13 @@ AC_PROG_CC
 AM_PROG_AR
 AC_CONFIG_MACRO_DIRS([m4])
 AC_CONFIG_HEADERS([config.h])
-AC_DEFINE([DEBUG_TRACE_EXECUTION], [], [Trace execution])
+AC_ARG_ENABLE([stacktrace], 
+	      AS_HELP_STRING([--enable-stacktrace],
+			      [debug stack tracing])
+	      , 
+	      [], [with_stacktrace=yes])
+AS_IF([test "x$with_stacktrace" != xno],
+      [AC_DEFINE([DEBUG_STACK_TRACE], [],[Trace stack execution])],[])
 AC_CONFIG_FILES([
 	Doxyfile
 	doxygen-awesome.css
