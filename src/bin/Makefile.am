@@ -1,5 +1,5 @@
-bin_PROGRAMS = lox
-lox_SOURCES  = main.c
-lox_LDADD    = ../lib/liblox.la
-lox_CPPFLAGS = -I$(top_srcdir)/include
-lox_LDFLAGS  = -llox -L$(top_builddir)/src/lib
+bin_PROGRAMS = %reldir%/lox
+%canon_reldir%_lox_SOURCES  = %reldir%/main.c
+%canon_reldir%_lox_LDADD    = $(top_builddir)/src/lib/liblox.la
+%canon_reldir%_lox_CPPFLAGS = -I$(top_srcdir)/include
+%canon_reldir%_lox_LDFLAGS  = -llox -L$(top_builddir)/src/lib

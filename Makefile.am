@@ -1,6 +1,8 @@
 AM_CPPFLAGS       = -Iinclude
 ACLOCAL_AMFLAGS   = -Im4
-SUBDIRS           = src/lib src/bin ./man
+include $(top_srcdir)/man/Makefile.am
+include $(top_srcdir)/src/bin/Makefile.am
+include $(top_srcdir)/src/lib/Makefile.am
 include_HEADERS	  = include/lox.h \
 		    include/lox/aux.h \
 		    include/lox/error.h \
