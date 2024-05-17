@@ -53,8 +53,16 @@ lox_value lox_vm_peekvalue(lox_vm *vm, int span) {
 lox_error_t lox_vm_interpret(lox_vm *vm) {
 #define read_byte() *(vm->ip++)
 #define read_constant() (vm->cur_chunk->constants.entries[read_byte()])
+#define binary_op(op)                                                          \
+    do {                                                                       \
+        lox_value b        = lox_vm_popvalue(vm);                              \
+        lox_value a        = lox_vm_popvalue(vm);                              \
+        lox_error_t result = lox_vm_pushvalue(vm, (a op b));                   \
+        if (!check_err(result)) {                                              \
+            return result;                                                     \
+        }                                                                      \
+    } while (false)
     for (;;) {
-
 #ifdef DEBUG_TRACE_EXECUTION
         printf("         ");
         for (lox_value *slot = vm->stack; slot < vm->stack_top; slot++) {
@@ -77,6 +85,18 @@ lox_error_t lox_vm_interpret(lox_vm *vm) {
             }
             break;
         }
+        case OP_ADD:
+            binary_op(+);
+            break;
+        case OP_SUBTRACT:
+            binary_op(-);
+            break;
+        case OP_MULTIPLY:
+            binary_op(*);
+            break;
+        case OP_DIVIDE:
+            binary_op(/);
+            break;
         case OP_RETURN: {
             lox_value val = lox_vm_popvalue(vm);
             lox_value_print(val);
@@ -87,4 +107,5 @@ lox_error_t lox_vm_interpret(lox_vm *vm) {
     }
 #undef read_byte
 #undef read_constant
+#undef binary_op
 }

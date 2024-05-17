@@ -4,9 +4,14 @@
 #include "memory.h"
 #include "value.h"
 #include <stdint.h>
+
 typedef enum lox_opcode_t {
     OP_RETURN,
     OP_CONSTANT,
+    OP_ADD,
+    OP_SUBTRACT,
+    OP_MULTIPLY,
+    OP_DIVIDE,
 } lox_opcode_t;
 
 typedef struct lox_chunk {
