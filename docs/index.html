@@ -101,9 +101,12 @@ $(function(){initNavTree('index.html',''); initResizable(); });
 <p>This is an implementation of the lox language. Eventaly I plan to morph it into my own language.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
 How to build</h1>
-<p>to build and install the program on arch linux run: </p><div class="fragment"><div class="line">zig build dryrun</div>
-<div class="line">sudo zig build --prefix=/usr</div>
-</div><!-- fragment --><p> to uninstall the program run: </p><div class="fragment"><div class="line">sudo zig build uninstall --prefix=/usr</div>
+<p>to build and install the program on arch linux run: </p><div class="fragment"><div class="line">./setup </div>
+<div class="line">cd build</div>
+<div class="line">make</div>
+<div class="line">sudo make install</div>
+</div><!-- fragment --><p> to uninstall the program run: </p><div class="fragment"><div class="line">cd build</div>
+<div class="line">sudo make uninstall</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md2"></a>
 Usage</h1>
 <p>to run the interpreter run </p><div class="fragment"><div class="line">lox </div>

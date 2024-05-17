@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>lox: Lox stack manipulation functions</title>
+<title>lox: lox_stack</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -95,14 +95,17 @@ $(function(){initNavTree('group__lox__stack.html',''); initResizable(); });
 <div class="header">
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
-  <div class="headertitle"><div class="title">Lox stack manipulation functions<div class="ingroups"><a class="el" href="group__Lox.html">API for the lox library</a></div></div></div>
+  <div class="headertitle"><div class="title">lox_stack<div class="ingroups"><a class="el" href="group__Lox.html">API for the lox library</a></div></div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Lox stack manipulation functions.  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gac2430c4b884ba5382a1a6edfc5584df2" id="r_gac2430c4b884ba5382a1a6edfc5584df2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gac2430c4b884ba5382a1a6edfc5584df2">lox_pushnumber</a> (<a class="el" href="group__lox__state.html#ga04b8601fdf547ff16426824a6cb15d58">lox_state</a> *state, <a class="el" href="group__lox__value.html#ga59a7a212927f2e3d56b01e83b4fbb4e1">lox_number_t</a> value)</td></tr>
-<tr class="separator:gac2430c4b884ba5382a1a6edfc5584df2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8d164c9fa5b3148a624ee638806b7521" id="r_ga8d164c9fa5b3148a624ee638806b7521"><td class="memItemLeft" align="right" valign="top"><a class="el" href="error_8h.html#ac4ab41db6758784ebc9265ec52228393">lox_error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga8d164c9fa5b3148a624ee638806b7521">lox_pushnumber</a> (<a class="el" href="group__lox__state.html#ga04b8601fdf547ff16426824a6cb15d58">lox_state</a> *state, <a class="el" href="group__lox__value.html#ga59a7a212927f2e3d56b01e83b4fbb4e1">lox_number_t</a> value)</td></tr>
+<tr class="separator:ga8d164c9fa5b3148a624ee638806b7521"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf918fec6995d4e3e719841d95a545770" id="r_gaf918fec6995d4e3e719841d95a545770"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__lox__value.html#ga59a7a212927f2e3d56b01e83b4fbb4e1">lox_number_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaf918fec6995d4e3e719841d95a545770">lox_popnumber</a> (<a class="el" href="group__lox__state.html#ga04b8601fdf547ff16426824a6cb15d58">lox_state</a> *state)</td></tr>
 <tr class="separator:gaf918fec6995d4e3e719841d95a545770"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf577d29368dd41466b747cff42d41a7a" id="r_gaf577d29368dd41466b747cff42d41a7a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__lox__value.html#ga59a7a212927f2e3d56b01e83b4fbb4e1">lox_number_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaf577d29368dd41466b747cff42d41a7a">lox_peeknumber</a> (<a class="el" href="group__lox__state.html#ga04b8601fdf547ff16426824a6cb15d58">lox_state</a> *state, int span)</td></tr>
@@ -111,6 +114,7 @@ Functions</h2></td></tr>
 <tr class="separator:ga892a9e6f19402efe5d72171667ad6f90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<p>Lox stack manipulation functions. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="gaf577d29368dd41466b747cff42d41a7a" name="gaf577d29368dd41466b747cff42d41a7a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaf577d29368dd41466b747cff42d41a7a">&#9670;&#160;</a></span>lox_peeknumber()</h2>
@@ -174,14 +178,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="gac2430c4b884ba5382a1a6edfc5584df2" name="gac2430c4b884ba5382a1a6edfc5584df2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac2430c4b884ba5382a1a6edfc5584df2">&#9670;&#160;</a></span>lox_pushnumber()</h2>
+<a id="ga8d164c9fa5b3148a624ee638806b7521" name="ga8d164c9fa5b3148a624ee638806b7521"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8d164c9fa5b3148a624ee638806b7521">&#9670;&#160;</a></span>lox_pushnumber()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void lox_pushnumber </td>
+          <td class="memname"><a class="el" href="error_8h.html#ac4ab41db6758784ebc9265ec52228393">lox_error_t</a> lox_pushnumber </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__lox__state.html#ga04b8601fdf547ff16426824a6cb15d58">lox_state</a> *</td>          <td class="paramname"><span class="paramname"><em>state</em>, </span></td>
         </tr>

@@ -98,18 +98,16 @@ $(function(){initNavTree('stack_8h.html',''); initResizable(); });
   <div class="headertitle"><div class="title">stack.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>Lox stack manipulation functions.  
-<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="state_8h_source.html">state.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="value_8h_source.html">value.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="error_8h_source.html">error.h</a>&quot;</code><br />
 </div>
 <p><a href="stack_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gac2430c4b884ba5382a1a6edfc5584df2" id="r_gac2430c4b884ba5382a1a6edfc5584df2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__lox__stack.html#gac2430c4b884ba5382a1a6edfc5584df2">lox_pushnumber</a> (<a class="el" href="group__lox__state.html#ga04b8601fdf547ff16426824a6cb15d58">lox_state</a> *state, <a class="el" href="group__lox__value.html#ga59a7a212927f2e3d56b01e83b4fbb4e1">lox_number_t</a> value)</td></tr>
-<tr class="separator:gac2430c4b884ba5382a1a6edfc5584df2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8d164c9fa5b3148a624ee638806b7521" id="r_ga8d164c9fa5b3148a624ee638806b7521"><td class="memItemLeft" align="right" valign="top"><a class="el" href="error_8h.html#ac4ab41db6758784ebc9265ec52228393">lox_error_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__lox__stack.html#ga8d164c9fa5b3148a624ee638806b7521">lox_pushnumber</a> (<a class="el" href="group__lox__state.html#ga04b8601fdf547ff16426824a6cb15d58">lox_state</a> *state, <a class="el" href="group__lox__value.html#ga59a7a212927f2e3d56b01e83b4fbb4e1">lox_number_t</a> value)</td></tr>
+<tr class="separator:ga8d164c9fa5b3148a624ee638806b7521"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf918fec6995d4e3e719841d95a545770" id="r_gaf918fec6995d4e3e719841d95a545770"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__lox__value.html#ga59a7a212927f2e3d56b01e83b4fbb4e1">lox_number_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__lox__stack.html#gaf918fec6995d4e3e719841d95a545770">lox_popnumber</a> (<a class="el" href="group__lox__state.html#ga04b8601fdf547ff16426824a6cb15d58">lox_state</a> *state)</td></tr>
 <tr class="separator:gaf918fec6995d4e3e719841d95a545770"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf577d29368dd41466b747cff42d41a7a" id="r_gaf577d29368dd41466b747cff42d41a7a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__lox__value.html#ga59a7a212927f2e3d56b01e83b4fbb4e1">lox_number_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__lox__stack.html#gaf577d29368dd41466b747cff42d41a7a">lox_peeknumber</a> (<a class="el" href="group__lox__state.html#ga04b8601fdf547ff16426824a6cb15d58">lox_state</a> *state, int span)</td></tr>
@@ -117,9 +115,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga892a9e6f19402efe5d72171667ad6f90" id="r_ga892a9e6f19402efe5d72171667ad6f90"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__lox__value.html#gae9d4172c4882bb0b5a17d7375d4749bd">lox_value_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__lox__stack.html#ga892a9e6f19402efe5d72171667ad6f90">lox_peektype</a> (<a class="el" href="group__lox__state.html#ga04b8601fdf547ff16426824a6cb15d58">lox_state</a> *state, int span)</td></tr>
 <tr class="separator:ga892a9e6f19402efe5d72171667ad6f90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Lox stack manipulation functions. </p>
-</div></div><!-- contents -->
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

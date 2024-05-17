@@ -1,8 +1,8 @@
 var group__Lox =
 [
-    [ "Lox stack manipulation functions", "group__lox__stack.html", "group__lox__stack" ],
-    [ "Lox state managment functions", "group__lox__state.html", "group__lox__state" ],
-    [ "Lox value manipulation functions", "group__lox__value.html", "group__lox__value" ],
+    [ "lox_stack", "group__lox__stack.html", "group__lox__stack" ],
+    [ "lox_state", "group__lox__state.html", "group__lox__state" ],
+    [ "lox_value", "group__lox__value.html", "group__lox__value" ],
     [ "error.h", "error_8h.html", null ],
     [ "lox_dofile", "group__Lox.html#ga90afba6b5a4821ef2d5cd5df875ef1af", null ],
     [ "lox_dostring", "group__Lox.html#ga336c15a50b40a2c17cbeedd50e0ea4bb", null ],

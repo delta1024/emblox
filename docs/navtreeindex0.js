@@ -18,7 +18,7 @@ var NAVTREEINDEX0 =
 "group__Lox.html#gabb1ae8759ca306f29eca8d9f63e37dc4":[2,0,6],
 "group__lox__stack.html":[2,0,0],
 "group__lox__stack.html#ga892a9e6f19402efe5d72171667ad6f90":[2,0,0,1],
-"group__lox__stack.html#gac2430c4b884ba5382a1a6edfc5584df2":[2,0,0,3],
+"group__lox__stack.html#ga8d164c9fa5b3148a624ee638806b7521":[2,0,0,3],
 "group__lox__stack.html#gaf577d29368dd41466b747cff42d41a7a":[2,0,0,0],
 "group__lox__stack.html#gaf918fec6995d4e3e719841d95a545770":[2,0,0,2],
 "group__lox__state.html":[2,0,1],
