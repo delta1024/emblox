@@ -1,8 +1,10 @@
 #include "chunk.h"
+#include "value.h"
 
 void lox_chunk_init(lox_chunk *chunk) {
     chunk->capacity = chunk->count = 0;
     chunk->code = chunk->lines = NULL;
+    lox_value_array_init(&chunk->constants);
 }
 void lox_chunk_writebyte(lox_chunk *chunk, uint8_t byte, uint8_t line,
                          lox_memory *allocator) {
@@ -19,10 +21,18 @@ void lox_chunk_writebyte(lox_chunk *chunk, uint8_t byte, uint8_t line,
     chunk->code[chunk->count]    = byte;
     chunk->lines[chunk->count++] = line;
 }
+
+int lox_chunk_writeconstant(lox_chunk *chunk, value val,
+                            lox_memory *allocator) {
+    lox_value_array_write(&chunk->constants, val, allocator);
+    return chunk->constants.count - 1;
+}
+
 void lox_chunk_free(lox_chunk *chunk, lox_memory *allocator) {
     allocator->f(allocator->ud, chunk->code, sizeof(uint8_t) * chunk->capacity,
                  0);
     allocator->f(allocator->ud, chunk->lines, sizeof(uint8_t) * chunk->capacity,
                  0);
+    lox_value_array_free(&chunk->constants, allocator);
     lox_chunk_init(chunk);
 }

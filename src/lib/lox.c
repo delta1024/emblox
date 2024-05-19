@@ -58,11 +58,11 @@ lox_state *lox_newstate(lox_alloc_fn f, void *ud) {
 }
 void lox_close(lox_state *state) {
     lox_memory memory = state->memory;
+    lox_chunk_free(&state->chunk, &memory);
     memory.f(memory.ud, state, sizeof(lox_state), 0);
     if (state->user_allocator) {
         return;
     }
-    lox_chunk_free(&state->chunk, &memory);
     lox_allocator *allocator = (lox_allocator *)memory.ud;
     assert(allocator->bytes_allocated - sizeof(lox_allocator) ==
            allocator->bytes_freed);
@@ -70,7 +70,10 @@ void lox_close(lox_state *state) {
 }
 lox_error lox_loadbuffer(lox_state *state, const char *buff, size_t sz,
                          const char *name) {
-    lox_chunk_writebyte(&state->chunk, OP_RETURN, 0, &state->memory);
+    int pos = lox_chunk_writeconstant(&state->chunk, 34, &state->memory);
+    lox_chunk_writebyte(&state->chunk, OP_CONSTANT, 0, &state->memory);
+    lox_chunk_writebyte(&state->chunk, pos, 0, &state->memory);
+    lox_chunk_writebyte(&state->chunk, OP_RETURN, 1, &state->memory);
     return LOX_ERROR_OK;
 }
 lox_error lox_pcall(lox_state *state, int nargs) {
