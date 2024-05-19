@@ -5,9 +5,9 @@
 #include "memory.h"
 
 typedef struct lox_vm {
-	lox_chunk *chunk;
-	uint8_t *ip;
-}lox_vm ;
+    lox_chunk *chunk;
+    uint8_t *ip;
+} lox_vm;
 
 void lox_vm_init(lox_vm *vm);
 void lox_vm_free(lox_vm *vm, lox_memory *allocator);
