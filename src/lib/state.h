@@ -1,16 +1,17 @@
 #ifndef _LOX_STATE_H
 #define _LOX_STATE_H
 #include <lox.h>
+#include "memory.h"
 #include "common.h"
+#include "chunk.h"
+#include "vm.h"
 
-typedef struct lox_memory {
-	void *ud;
-	lox_alloc_fn f;
-} lox_memory;
 
 struct lox_state {
 	lox_memory memory;
 	bool user_allocator;
+	lox_chunk chunk;
+	lox_vm vm;
 };
 
 

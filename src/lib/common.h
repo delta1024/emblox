@@ -4,5 +4,5 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-// IWYU pragma: end_exports
+// iwyu pragma: end_exports
 #endif // !_LOX_COMMON_H

@@ -86,8 +86,7 @@ pub fn build(b: *Build) !void {
     });
 
     const write_flags = b.addWriteFiles();
-    write_flags.addBytesToSource(lib_compile_flags, b.pathJoin(&.{ lib_dir, "compile_flags.txt" }));
-    write_flags.addBytesToSource(general_compile_flags, b.pathJoin(&.{ bin_dir, "compile_flags.txt" }));
+    write_flags.addBytesToSource(lib_compile_flags, "compile_flags.txt");
 
     const editorconf_step = b.step("editorconf", "generate compile_flags.txt");
     editorconf_step.dependOn(&write_flags.step);
