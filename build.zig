@@ -9,11 +9,19 @@ const LibLinkMode = enum {
     Dynamic,
 };
 
+const CompileFlags = struct {
+    step: Build.Step,
+    include: Build.LazyPath,
+    lib: Build.LazyPath,
+};
 pub fn build(b: *Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
     const lib_link = b.option(LibLinkMode, "link_lib", "Set the library output type.") orelse .Dynamic;
 
+    const config = b.addConfigHeader(.{ .include_path = "lox_config.h" }, .{
+        .UINT8_SIZE = std.math.maxInt(u8),
+    });
     const lib = switch (lib_link) {
         .Static => b.addStaticLibrary(.{
             .name = program_name,
@@ -28,6 +36,7 @@ pub fn build(b: *Build) !void {
             .pic = true,
         }),
     };
+    lib.addConfigHeader(config);
     lib.linkLibC();
     lib.addIncludePath(b.path(include_dir));
     lib.installHeadersDirectory(b.path(include_dir), "", .{});
@@ -79,7 +88,7 @@ pub fn build(b: *Build) !void {
     , .{try b.build_root.handle.realpathAlloc(b.allocator, include_dir)});
     const lib_compile_flags = b.fmt(
         \\{s}-I{s}
-        \\
+        \\-I
     , .{
         general_compile_flags,
         try b.build_root.handle.realpathAlloc(b.allocator, lib_dir),
@@ -88,6 +97,12 @@ pub fn build(b: *Build) !void {
     const write_flags = b.addWriteFiles();
     write_flags.addBytesToSource(lib_compile_flags, "compile_flags.txt");
 
+    const dirname = b.addSystemCommand(&.{"dirname"});
+    dirname.addFileArg(config.getOutput());
+
+    const dd = b.addSystemCommand(&.{ "dd", "status=none", "oflag=append", "conv=notrunc", "of=compile_flags.txt" });
+    dd.setStdIn(.{ .lazy_path = dirname.captureStdOut() });
+    dd.step.dependOn(&write_flags.step);
     const editorconf_step = b.step("editorconf", "generate compile_flags.txt");
-    editorconf_step.dependOn(&write_flags.step);
+    editorconf_step.dependOn(&dd.step);
 }
