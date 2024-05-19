@@ -31,7 +31,6 @@ pub fn build(b: *Build) !void {
     lib.linkLibC();
     lib.addIncludePath(b.path(include_dir));
     lib.installHeadersDirectory(b.path(include_dir), "", .{});
-
     var lib_src_dir = try b.build_root.handle.openDir(lib_dir, .{
         .iterate = true,
     });
@@ -62,6 +61,7 @@ pub fn build(b: *Build) !void {
     exe.linkLibrary(lib);
     exe.addRPath(lib.getEmittedBinDirectory());
     exe.addIncludePath(b.path(include_dir));
+
     b.installArtifact(exe);
 
     const run_step = b.step("run", "run the executable");
@@ -69,4 +69,26 @@ pub fn build(b: *Build) !void {
     if (b.args) |args|
         run_cmd.addArgs(args);
     run_step.dependOn(&run_cmd.step);
+
+    const general_compile_flags =
+        b.fmt(
+        \\-xc
+        \\-xc-header
+        \\-I{s}
+        \\
+    , .{try b.build_root.handle.realpathAlloc(b.allocator, include_dir)});
+    const lib_compile_flags = b.fmt(
+        \\{s}-I{s}
+        \\
+    , .{
+        general_compile_flags,
+        try b.build_root.handle.realpathAlloc(b.allocator, lib_dir),
+    });
+
+    const write_flags = b.addWriteFiles();
+    write_flags.addBytesToSource(lib_compile_flags, b.pathJoin(&.{ lib_dir, "compile_flags.txt" }));
+    write_flags.addBytesToSource(general_compile_flags, b.pathJoin(&.{ bin_dir, "compile_flags.txt" }));
+
+    const editorconf_step = b.step("editorconf", "generate compile_flags.txt");
+    editorconf_step.dependOn(&write_flags.step);
 }
