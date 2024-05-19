@@ -3,6 +3,9 @@
 #include "lox.h"
 #include "value.h"
 #include <stdio.h>
+#ifdef DEBUG_TRACE_EXECUTION
+#include "debug.h"
+#endif /* ifdef DEBUG_TRACE_EXECUTION */
 
 void lox_vm_init(lox_vm *vm) {
     vm->chunk = NULL;
@@ -15,6 +18,9 @@ lox_error lox_vm_run(lox_vm *vm) {
 #define read_byte() (*vm->ip++)
 #define read_constant() (vm->chunk->constants.entries[read_byte()])
     for (;;) {
+#ifdef DEBUG_TRACE_EXECUTION
+        lox_debug_dissasemble_instruction(vm->chunk, vm->ip - vm->chunk->code);
+#endif /* ifdef DEBUG_TRACE_EXECUTION */
         uint8_t byte = read_byte();
         switch ((op_code_t)byte) {
         case OP_CONSTANT: {

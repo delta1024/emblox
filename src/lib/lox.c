@@ -1,5 +1,6 @@
 #include "lox.h"
 #include "chunk.h"
+#include "debug.h"
 #include "state.h" // IWYU pragma: keep
 #include "vm.h"
 #include <assert.h>
@@ -74,6 +75,7 @@ lox_error lox_loadbuffer(lox_state *state, const char *buff, size_t sz,
     lox_chunk_writebyte(&state->chunk, OP_CONSTANT, 0, &state->memory);
     lox_chunk_writebyte(&state->chunk, pos, 0, &state->memory);
     lox_chunk_writebyte(&state->chunk, OP_RETURN, 1, &state->memory);
+    lox_debug_dissasemble_chunk(&state->chunk, "test chunk");
     return LOX_ERROR_OK;
 }
 lox_error lox_pcall(lox_state *state, int nargs) {

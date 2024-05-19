@@ -9,16 +9,26 @@ const LibLinkMode = enum {
     Dynamic,
 };
 
-const CompileFlags = struct {
-    step: Build.Step,
-    include: Build.LazyPath,
-    lib: Build.LazyPath,
+const BuildOptions = struct {
+    debug_trace_execution: bool = true,
+
+    pub fn parse(b: *Build) BuildOptions {
+        var ret = BuildOptions{};
+        if (b.option(bool, "debug_trace_execution", "display current vm instruction and stack trace")) |d|
+            ret.debug_trace_execution = d;
+        return ret;
+    }
+    pub fn apply(self: BuildOptions, lib: *Build.Step.Compile) void {
+        if (self.debug_trace_execution)
+            lib.defineCMacro("DEBUG_TRACE_EXECUTION", null);
+    }
 };
 pub fn build(b: *Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
     const lib_link = b.option(LibLinkMode, "link_lib", "Set the library output type.") orelse .Dynamic;
 
+    const build_opts = BuildOptions.parse(b);
     const config = b.addConfigHeader(.{ .include_path = "lox_config.h" }, .{
         .UINT8_SIZE = std.math.maxInt(u8),
     });
@@ -56,6 +66,7 @@ pub fn build(b: *Build) !void {
         .files = src_files.items,
     });
 
+    build_opts.apply(lib);
     b.installArtifact(lib);
 
     const exe = b.addExecutable(.{
@@ -86,14 +97,18 @@ pub fn build(b: *Build) !void {
         \\-I{s}
         \\
     , .{try b.build_root.handle.realpathAlloc(b.allocator, include_dir)});
-    const lib_compile_flags = b.fmt(
+    var lib_compile_flags = b.fmt(
         \\{s}-I{s}
-        \\-I
     , .{
         general_compile_flags,
         try b.build_root.handle.realpathAlloc(b.allocator, lib_dir),
     });
 
+    if (build_opts.debug_trace_execution) {
+        lib_compile_flags = b.fmt("{s}\n-DDEBUG_TRACE_EXECUTION", .{lib_compile_flags});
+    }
+
+    lib_compile_flags = b.fmt("{s}\n-I", .{lib_compile_flags});
     const write_flags = b.addWriteFiles();
     write_flags.addBytesToSource(lib_compile_flags, "compile_flags.txt");
 
