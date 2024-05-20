@@ -30,7 +30,7 @@ pub fn build(b: *Build) !void {
 
     const build_opts = BuildOptions.parse(b);
     const config = b.addConfigHeader(.{ .include_path = "lox_config.h" }, .{
-        .UINT8_SIZE = std.math.maxInt(u8),
+        .UINT8_MAX = std.math.maxInt(u8),
     });
     const lib = switch (lib_link) {
         .Static => b.addStaticLibrary(.{

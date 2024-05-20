@@ -2,9 +2,11 @@
 #include "chunk.h"
 #include "debug.h"
 #include "state.h" // IWYU pragma: keep
+#include "value.h"
 #include "vm.h"
 #include <assert.h>
 #include <stdlib.h>
+
 typedef struct lox_allocator {
     size_t bytes_allocated;
     size_t bytes_freed;
@@ -75,7 +77,7 @@ lox_error lox_loadbuffer(lox_state *state, const char *buff, size_t sz,
     lox_chunk_writebyte(&state->chunk, OP_CONSTANT, 0, &state->memory);
     lox_chunk_writebyte(&state->chunk, pos, 0, &state->memory);
     lox_chunk_writebyte(&state->chunk, OP_RETURN, 1, &state->memory);
-    lox_debug_dissasemble_chunk(&state->chunk, "test chunk");
+    lox_debug_dissasemblechunk(&state->chunk, "test chunk");
     return LOX_ERROR_OK;
 }
 lox_error lox_pcall(lox_state *state, int nargs) {
@@ -89,4 +91,11 @@ lox_error lox_pcall(lox_state *state, int nargs) {
         return err;
     }
     return LOX_ERROR_OK;
+}
+void lox_pushnumber(lox_state *state, lox_number n) {
+    lox_vm_push(&state->vm, n);
+}
+lox_number lox_tonumber(lox_state *state, int index) {
+    lox_value val = lox_vm_peek(&state->vm, index);
+    return val;
 }

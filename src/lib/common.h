@@ -1,8 +1,9 @@
 #ifndef _LOX_COMMON_H
 #define _LOX_COMMON_H
 // IWYU pragma: begin_exports
+#include "lox_config.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-// iwyu pragma: end_exports
+// IWYU pragma: end_exports
 #endif // !_LOX_COMMON_H

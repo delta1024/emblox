@@ -21,5 +21,6 @@ void lox_chunk_init(lox_chunk *chunk);
 void lox_chunk_free(lox_chunk *chunk, lox_memory *allocator);
 void lox_chunk_writebyte(lox_chunk *chunk, uint8_t byte, uint8_t line,
                          lox_memory *allocator);
-int lox_chunk_writeconstant(lox_chunk *chunk, value val, lox_memory *allocator);
+int lox_chunk_writeconstant(lox_chunk *chunk, lox_value val,
+                            lox_memory *allocator);
 #endif // !_LOX_CHUNK_
