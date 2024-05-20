@@ -7,6 +7,10 @@
 typedef enum op_code_t {
     OP_RETURN,
     OP_CONSTANT,
+    OP_ADD,
+    OP_SUBTRACT,
+    OP_MULTIPLY,
+    OP_DIVIDE
 } op_code_t;
 
 typedef struct lox_chunk {

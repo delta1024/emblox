@@ -3,8 +3,9 @@
 #include "value.h"
 #include <stdio.h>
 const char *strs[] = {
-    [OP_RETURN]   = "OP_RETURN",
-    [OP_CONSTANT] = "OP_CONSTANT",
+    [OP_RETURN] = "OP_RETURN",     [OP_CONSTANT] = "OP_CONSTANT",
+    [OP_ADD] = "OP_ADD",           [OP_SUBTRACT] = "OP_SUBTRACT",
+    [OP_MULTIPLY] = "OP_MULTIPLY", [OP_DIVIDE] = "OP_DIVIDE",
 };
 void lox_debug_dissasemblechunk(lox_chunk *chunk, const char *name) {
     printf("== %s ==\n", name);
@@ -35,6 +36,13 @@ int lox_debug_dissasembleinstruction(lox_chunk *chunk, int offset) {
     case OP_CONSTANT:
         return constant_instruction(strs[byte], chunk, offset);
     case OP_RETURN:
+    case OP_ADD:
+    case OP_SUBTRACT:
+    case OP_MULTIPLY:
+    case OP_DIVIDE:
         return simple_instruction(strs[byte], offset);
+    default:
+        fprintf(stderr, "unknown opcode: %d\n", byte);
+        return offset + 1;
     }
 }

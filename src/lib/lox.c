@@ -73,12 +73,22 @@ void lox_close(lox_state *state) {
 }
 lox_error lox_loadbuffer(lox_state *state, const char *buff, size_t sz,
                          const char *name) {
-    int pos = lox_chunk_writeconstant(&state->chunk, 34, &state->memory);
-    lox_chunk_writebyte(&state->chunk, OP_CONSTANT, 0, &state->memory);
-    lox_chunk_writebyte(&state->chunk, pos, 0, &state->memory);
+#define add_const(n)                                                           \
+    do {                                                                       \
+        int pos = lox_chunk_writeconstant(&state->chunk, (n), &state->memory); \
+        lox_chunk_writebyte(&state->chunk, OP_CONSTANT, 0, &state->memory);    \
+        lox_chunk_writebyte(&state->chunk, pos, 0, &state->memory);            \
+    } while (false)
+
+    add_const(45);
+    add_const(33);
+
+    lox_chunk_writebyte(&state->chunk, OP_ADD, 0, &state->memory);
+
     lox_chunk_writebyte(&state->chunk, OP_RETURN, 1, &state->memory);
     lox_debug_dissasemblechunk(&state->chunk, "test chunk");
     return LOX_ERROR_OK;
+#undef add_const
 }
 lox_error lox_pcall(lox_state *state, int nargs) {
     lox_error err;
